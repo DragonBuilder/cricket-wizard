@@ -19,8 +19,8 @@ def chat_mode():
     start()
 
 @scrapejob_app.command()
-def archive():
-    scrape.scrape_cricbuzz_archive()
+def archive(headless: Optional[bool]=True):
+    scrape.scrape_cricbuzz_archive(headless)
 
 @scrapejob_app.command()
 def match_info():

@@ -1,22 +1,23 @@
 ## to be used to scrape data off the internet which will be used to update internal db
 
 import os
+from typing import Optional
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 
-def scrape_cricbuzz_archive():
-    scrape_url("cricbuzz-archive", "https://www.cricbuzz.com/cricket-scorecard-archives")
+def scrape_cricbuzz_archive(headless: Optional[bool] = True):
+    scrape_url("cricbuzz-archive", "https://www.cricbuzz.com/cricket-scorecard-archives", headless)
 
-def scrape_url(name: str, url: str):
+def scrape_url(name: str, url: str, headless: Optional[bool]=True):
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(headless=headless)
         page = browser.new_page()
         page.goto(url)
         print(page.title())
         save(f"{name}.html", page.content())
         browser.close()
 
-def scrape_match_info(url: str):
+def scrape_match_info(url: str, headless: Optional[bool]=True):
     url_segments = urlparse(url)
     match_slug = os.path.split(url_segments.path)[-1]
 
@@ -24,7 +25,7 @@ def scrape_match_info(url: str):
 
     sections = ['Commentary', 'Scorecard', 'Squads', 'Highlights']
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(headless=headless)
         page = browser.new_page()
         page.goto(url)        
 
@@ -36,8 +37,8 @@ def scrape_match_info(url: str):
                 raise Exception(f"expected the nav bar title to be {section} but was {nav_bar_title}")
             
             nav_bar.click()
-            save(f"{match_slug}/{section}.html", page.content())
-            
+            save(f"matches/{match_slug}/{section}.html", page.content())
+        browser.close()
 
 
 
