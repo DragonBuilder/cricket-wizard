@@ -3,4 +3,4 @@
 # echo $@
 
 source env.sh
-poetry run python apps/cli.py $@
+poetry run python main.py $@

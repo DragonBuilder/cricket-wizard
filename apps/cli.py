@@ -1,7 +1,8 @@
 from typing import Optional
 import typer
 from cricket_wizard.agent import start
-from scrape import scrape_url, scrape_cricbuzz_archive
+# from scrape import scrape_url, scrape_cricbuzz_archive
+import scrape
 
 # from .httpserver import app as httpserver_app
 
@@ -19,7 +20,13 @@ def chat_mode():
 
 @scrapejob_app.command()
 def archive():
-    scrape_cricbuzz_archive()
+    scrape.scrape_cricbuzz_archive()
+
+@scrapejob_app.command()
+def match_info():
+    scrape.scrape_match_info("https://www.cricbuzz.com/live-cricket-scores/91796/aus-vs-ind-3rd-test-india-tour-of-australia-2024-25")
+
+
 
 # @app.command()
 # def start_httpserver(port: Optional[str] = "9999"):
