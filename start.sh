@@ -1,4 +1,6 @@
 #!/bin/bash
 
+# echo $@
+
 source env.sh
-poetry run python -m main
+poetry run python main.py $@

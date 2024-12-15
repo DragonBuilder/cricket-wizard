@@ -1,28 +1,29 @@
 import typer
-from openai import OpenAI
+from cricket_wizard.agent import start
+from scrape import scrape_url, scrape_cricbuzz_archive
 
-openai_api_key = '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'
+app = typer.Typer()
+
+scrapejob_app = typer.Typer()
+app.add_typer(scrapejob_app, name="scrape")
+
+@app.command()
+def chat_mode():
+    start()
+
+@scrapejob_app.command()
+def archive():
+    scrape_cricbuzz_archive()
 
 
-def start():
-    qry = input("ask you query on cricket:\n")
-    # print(qry)
+    
+    # sync_playwright()
 
-    client = OpenAI()
-
-    completion = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {
-                "role": "user",
-                "content": qry
-            }
-        ]
-    )
-
-    print(completion.choices[0].message)
+# def main():
+#     # start()
+#     sync_playwright()
 
 
 if __name__ == "__main__":
-    typer.run(start)
+    # typer.run(main)
+    app()
